@@ -1,8 +1,6 @@
 package locadora.domain;
 
-
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,6 +22,8 @@ public class Acervo {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "acervo")
 	private List<Exemplar> exemplares;
 
+	public Acervo() {}
+	
 	public Acervo(String codigo, String titulo, float valor, TipoAcervo tipoAcervo, TipoClassificacao tipoClassificacao,
 			TipoMidia tipoMidia) {
 		super();
@@ -33,7 +33,6 @@ public class Acervo {
 		this.tipoAcervo = tipoAcervo;
 		this.tipoClassificacao = tipoClassificacao;
 		this.tipoMidia = tipoMidia;
-		//this.exemplares = new List<Exemplar>();
 	}
 
 	public String getCodigo() {

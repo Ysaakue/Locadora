@@ -5,6 +5,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -15,11 +16,15 @@ public class ItemEmprestimo {
 	private float valor;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "exemplar")
 	private Exemplar exemplar;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "emprestimo")
 	private Emprestimo emprestimo;
 
+	public ItemEmprestimo() {}
+	
 	public ItemEmprestimo(float valor, Exemplar exemplar, Emprestimo emprestimo) {
 		super();
 		this.valor = valor;

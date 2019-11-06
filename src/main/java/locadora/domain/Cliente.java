@@ -11,6 +11,9 @@ public class Cliente {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	private String codigo, nome, endereco, telefone, bairro, cep;
+	
+	public Cliente() {}
+	
 	public Cliente(String codigo, String nome, String endereco, String telefone, String bairro, String cep) {
 		super();
 		this.codigo = codigo;
