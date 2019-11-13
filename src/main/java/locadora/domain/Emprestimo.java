@@ -1,7 +1,8 @@
 package locadora.domain;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Emprestimo {
@@ -23,11 +27,13 @@ public class Emprestimo {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "cliente")
+	@JsonBackReference
 	private Cliente cliente;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "emprestimo")
+	@JsonManagedReference
 	private List<ItemEmprestimo> itens;
-
+	
 	public Emprestimo() {}
 	
 	public Emprestimo(String codigo, Date dataEmprestimo, Cliente cliente) {
@@ -109,10 +115,15 @@ public class Emprestimo {
 		this.itens = itens;
 	}
 	
-	public void addItem(ItemEmprestimo item) {
-		this.itens.add(item);
-	}
 	public long getId() {
 		return id;
+	}
+	
+	public float calculaValorEmprestimo() {
+		this.valorEmprestimo = 0;
+		for(ItemEmprestimo item: this.itens) {
+			this.valorEmprestimo+=item.calcularValor();
+		}
+		return this.valorEmprestimo;
 	}
 }

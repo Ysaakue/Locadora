@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class ItemEmprestimo {
@@ -17,17 +18,18 @@ public class ItemEmprestimo {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "exemplar")
+	@JsonBackReference
 	private Exemplar exemplar;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "emprestimo")
+	@JsonBackReference
 	private Emprestimo emprestimo;
 
 	public ItemEmprestimo() {}
 	
-	public ItemEmprestimo(float valor, Exemplar exemplar, Emprestimo emprestimo) {
+	public ItemEmprestimo(Exemplar exemplar, Emprestimo emprestimo) {
 		super();
-		this.valor = valor;
 		this.exemplar = exemplar;
 		this.emprestimo = emprestimo;
 	}
@@ -58,5 +60,7 @@ public class ItemEmprestimo {
 	public long getId() {
 		return id;
 	}
-	
+	 public float calcularValor() {
+		 return this.valor = this.getExemplar().getAcervo().getValor();
+	 }
 }

@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -14,9 +15,11 @@ import locadora.domain.Acervo;
 import locadora.domain.AcervoRepository;
 import locadora.domain.Cliente;
 import locadora.domain.ClienteRepository;
+import locadora.domain.Emprestimo;
 import locadora.domain.EmprestimoRepository;
 import locadora.domain.Exemplar;
 import locadora.domain.ExemplarRepository;
+import locadora.domain.ItemEmprestimo;
 import locadora.domain.ItemEmprestimoRepository;
 import locadora.domain.TipoAcervo;
 import locadora.domain.TipoClassificacao;
@@ -26,9 +29,13 @@ import locadora.domain.TipoMidia;
 public class LocadoraApplication {
 	@Autowired
 	private AcervoRepository acervo;
-	private ClienteRepository cliente;
+	@Autowired
+	private ClienteRepository clienteR;
+	@Autowired
 	private EmprestimoRepository emprestimo;
+	@Autowired
 	private ExemplarRepository exemplar;
+	@Autowired
 	private ItemEmprestimoRepository itemEmprestimo;
 	
 	private static final Logger logger = LoggerFactory.getLogger(LocadoraApplication.class);
@@ -38,21 +45,22 @@ public class LocadoraApplication {
 		logger.info("Sistema iniciado");
 	}
 	@Bean
+	
 	CommandLineRunner runner(){
 		return args -> {
 			Cliente c1 = new Cliente("001", "Isaac", "rua 1", "40028922", "Benfica", "606060");
 			Cliente c2 = new Cliente("002", "João", "rua 2", "40028922", "Benfica", "606061");
-			Cliente c3 = new Cliente("003", "Natam", "rua 3", "40028922", "Benfica", "606062");
+			Cliente c3 = new Cliente("003", "Natan", "rua 3", "40028922", "Benfica", "606062");
 			Cliente c4 = new Cliente("004", "marcos", "rua 4", "40028922", "Benfica", "606063");
 			Cliente c5 = new Cliente("005", "Joana", "rua 5", "40028922", "Benfica", "606064");
-			Cliente c6 = new Cliente("006", "Samiris", "rua 6", "40028922", "Benfica", "606065");
+			Cliente c6 = new Cliente("006", "Joana", "rua 6", "40028922", "Benfica", "606064");
 			
-			cliente.save(c1);
-			cliente.save(c2);
-			cliente.save(c3);
-			cliente.save(c4);
-			cliente.save(c5);
-			cliente.save(c6);
+			clienteR.save(c1);
+			clienteR.save(c2);
+			clienteR.save(c3);
+			clienteR.save(c4);
+			clienteR.save(c5);
+			clienteR.save(c6);
 			
 			Acervo a1 = new Acervo("001", "Alice no país das maravilhas", (float)2.30, TipoAcervo.FILME, TipoClassificacao.PRATA, TipoMidia.DVD);
 			Acervo a2 = new Acervo("002", "Nightmare", (float)5, TipoAcervo.MUSICA, TipoClassificacao.BRONZE, TipoMidia.FITA);
@@ -106,24 +114,71 @@ public class LocadoraApplication {
 			exemplar.save(e17);
 			exemplar.save(e18);
 			
-			a1.addExemplar(e1);
-			a1.addExemplar(e2);
-			a1.addExemplar(e3);
-			a2.addExemplar(e4);
-			a2.addExemplar(e5);
-			a2.addExemplar(e6);
-			a3.addExemplar(e7);
-			a3.addExemplar(e8);
-			a3.addExemplar(e9);
-			a4.addExemplar(e10);
-			a4.addExemplar(e11);
-			a4.addExemplar(e12);
-			a5.addExemplar(e13);
-			a5.addExemplar(e14);
-			a5.addExemplar(e15);
-			a6.addExemplar(e16);
-			a6.addExemplar(e17);
-			a6.addExemplar(e18);
+			
+			Emprestimo ep1 = new Emprestimo("001", new Date(), c1);
+			ItemEmprestimo item1 = new ItemEmprestimo (e1, ep1);
+			ItemEmprestimo item2 = new ItemEmprestimo(e2, ep1);
+			ItemEmprestimo item3 = new ItemEmprestimo(e3, ep1);
+			ItemEmprestimo item4 = new ItemEmprestimo(e4, ep1);
+			
+			Emprestimo ep2 = new Emprestimo("002", new Date(),c2);
+			ItemEmprestimo item5 = new ItemEmprestimo(e5, ep2);
+			ItemEmprestimo item6 = new ItemEmprestimo(e6, ep2);
+			ItemEmprestimo item7 = new ItemEmprestimo(e7, ep2);
+			ItemEmprestimo item8 = new ItemEmprestimo(e8, ep2);
+			
+			Emprestimo ep3 = new Emprestimo("003", new Date(), c3);
+			ItemEmprestimo item9 = new ItemEmprestimo(e9, ep3);
+			ItemEmprestimo item10 = new ItemEmprestimo(e10, ep3);
+			ItemEmprestimo item11 = new ItemEmprestimo(e11, ep3);
+			ItemEmprestimo item12 = new ItemEmprestimo(e12, ep3);
+			
+			Emprestimo ep4 = new Emprestimo("004", new Date(), c4);
+			ItemEmprestimo item13 = new ItemEmprestimo(e13, ep4);
+			ItemEmprestimo item14 = new ItemEmprestimo(e14, ep4);
+			ItemEmprestimo item15 = new ItemEmprestimo(e15, ep4);
+			
+			Emprestimo ep5 = new Emprestimo("005", new Date(), c5);
+			ItemEmprestimo item16 = new ItemEmprestimo(e16, ep5);
+			
+			Emprestimo ep6 = new Emprestimo("006", new Date(), c6);
+			ItemEmprestimo item17 = new ItemEmprestimo(e17, ep6);
+			ItemEmprestimo item18 = new ItemEmprestimo(e18, ep6);
+			
+			emprestimo.save(ep1);
+			emprestimo.save(ep2);
+			emprestimo.save(ep3);
+			emprestimo.save(ep4);
+			emprestimo.save(ep5);
+			emprestimo.save(ep6);
+			
+			
+			itemEmprestimo.save(item1);
+			itemEmprestimo.save(item2);
+			itemEmprestimo.save(item3);
+			itemEmprestimo.save(item4);
+			itemEmprestimo.save(item5);
+			itemEmprestimo.save(item6);
+			itemEmprestimo.save(item7);
+			itemEmprestimo.save(item8);
+			itemEmprestimo.save(item9);
+			itemEmprestimo.save(item10);
+			itemEmprestimo.save(item11);
+			itemEmprestimo.save(item12);
+			itemEmprestimo.save(item13);
+			itemEmprestimo.save(item14);
+			itemEmprestimo.save(item15);
+			itemEmprestimo.save(item16);
+			itemEmprestimo.save(item17);
+			itemEmprestimo.save(item18);
+			
+			
+			//ep1.calculaValorEmprestimo();
+			//ep2.calculaValorEmprestimo();
+			//ep3.calculaValorEmprestimo();
+			//ep4.calculaValorEmprestimo();
+			//ep5.calculaValorEmprestimo();
+			//ep6.calculaValorEmprestimo();
 		};
 	}
 
