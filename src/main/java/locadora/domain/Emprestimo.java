@@ -18,6 +18,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -31,12 +33,13 @@ public class Emprestimo {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "cliente")
-//	@JsonBackReference
+	@JsonManagedReference
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Cliente cliente;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "emprestimo")
-	@JsonManagedReference
+	@JsonBackReference
 	private List<ItemEmprestimo> itens;
 	
 	public Emprestimo() {}
@@ -100,8 +103,8 @@ public class Emprestimo {
 		this.valorTotal = valorTotal;
 	}
 
-	public long getCliente() {
-		return cliente.getId();
+	public Cliente getCliente() {
+		return cliente;
 	}
 
 	public void setCliente(Cliente cliente) {

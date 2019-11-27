@@ -11,7 +11,8 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class ItemEmprestimo {
@@ -22,13 +23,15 @@ public class ItemEmprestimo {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "exemplar")
-	@JsonBackReference
+	@JsonManagedReference
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Exemplar exemplar;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "emprestimo")
-	@JsonBackReference
+	@JsonManagedReference
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Emprestimo emprestimo;
 

@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class Acervo {
@@ -23,7 +23,7 @@ public class Acervo {
 	private TipoMidia tipoMidia;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "acervo")
-	@JsonManagedReference
+	@JsonBackReference
 	private List<Exemplar> exemplares;
 
 	public Acervo() {}
@@ -58,7 +58,7 @@ public class Acervo {
 		} else {
 			this.tipoClassificacao = TipoClassificacao.LANCAMENTO;
 		}
-		if(tipoAcervo.equals("Cd")) {
+		if(tipoMidia.equals("Cd")) {
 			this.tipoMidia = TipoMidia.CD;
 		} else if(tipoMidia.equals("Dvd")) {
 			this.tipoMidia = TipoMidia.DVD;
@@ -131,7 +131,7 @@ public class Acervo {
 	}
 	
 	public void setTipoMidia(String tipoMidia) {
-		if(tipoAcervo.equals("Cd")) {
+		if(tipoMidia.equals("Cd")) {
 			this.tipoMidia = TipoMidia.CD;
 		} else if(tipoMidia.equals("Dvd")) {
 			this.tipoMidia = TipoMidia.DVD;

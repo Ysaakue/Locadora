@@ -22,6 +22,7 @@ import locadora.domain.EmprestimoRepository;
 public class EmprestimoController {
 	@Autowired
 	private EmprestimoRepository repository;
+	@Autowired
 	private ClienteRepository clienteRepository;
 	
 	// --INDEX--
@@ -48,6 +49,7 @@ public class EmprestimoController {
 		repository.save(newEmprestimo);
 		return newEmprestimo;
 	}
+	
 	
 	// --EDIT--
 	@PutMapping("/emprestimos/{id}")

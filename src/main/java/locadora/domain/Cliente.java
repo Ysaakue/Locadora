@@ -10,7 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class Cliente {
@@ -20,7 +20,7 @@ public class Cliente {
 	private String nome, endereco, telefone, bairro, cep;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
-	@JsonManagedReference
+	@JsonBackReference
 	private List<Emprestimo> emprestimos;
 	
 	public Cliente() {}

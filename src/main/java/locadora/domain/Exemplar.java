@@ -13,7 +13,8 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Exemplar {
@@ -24,7 +25,8 @@ public class Exemplar {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "acervo")
-//	@JsonBackReference
+	@JsonManagedReference
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Acervo acervo;
 
@@ -44,8 +46,8 @@ public class Exemplar {
 		this.dataRegistro = dataRegistro;
 	}
 
-	public long getAcervo() {
-		return acervo.getId();
+	public Acervo getAcervo() {
+		return acervo;
 	}
 
 	public void setAcervo(Acervo acervo) {
