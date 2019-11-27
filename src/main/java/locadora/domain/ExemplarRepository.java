@@ -1,7 +1,7 @@
 package locadora.domain;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ExemplarRepository extends CrudRepository <Exemplar, Long>{
+public interface ExemplarRepository extends JpaRepository <Exemplar, Long>{
 
 }

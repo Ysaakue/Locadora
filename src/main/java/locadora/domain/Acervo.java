@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -15,7 +16,7 @@ public class Acervo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	private String codigo, titulo;
+	private String titulo;
 	private float valor;
 	private TipoAcervo tipoAcervo;
 	private TipoClassificacao tipoClassificacao;
@@ -27,23 +28,43 @@ public class Acervo {
 
 	public Acervo() {}
 	
-	public Acervo(String codigo, String titulo, float valor, TipoAcervo tipoAcervo, TipoClassificacao tipoClassificacao,
-			TipoMidia tipoMidia) {
+	public Acervo(String titulo, float valor, TipoAcervo tipoAcervo, TipoClassificacao tipoClassificacao, TipoMidia tipoMidia) {
 		super();
-		this.codigo = codigo;
 		this.titulo = titulo;
 		this.valor = valor;
 		this.tipoAcervo = tipoAcervo;
 		this.tipoClassificacao = tipoClassificacao;
 		this.tipoMidia = tipoMidia;
 	}
-
-	public String getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
+	
+	public Acervo(String titulo, float valor, String tipoAcervo, String tipoClassificacao, String tipoMidia) {
+		super();
+		this.titulo = titulo;
+		this.valor = valor;
+		
+		if(tipoAcervo.equals("Filme")) {
+			this.tipoAcervo = TipoAcervo.FILME;
+		} else if(tipoAcervo.equals("VideoGame")) {
+			this.tipoAcervo = TipoAcervo.VIDEOGAME;
+		} else {
+			this.tipoAcervo = TipoAcervo.MUSICA;
+		}
+		if(tipoClassificacao.equals("Ouro")) {
+			this.tipoClassificacao = TipoClassificacao.OURO;
+		} else if(tipoClassificacao.equals("Prata")) {
+			this.tipoClassificacao = TipoClassificacao.PRATA;
+		} else if(tipoClassificacao.equals("Bronze")) {
+			this.tipoClassificacao = TipoClassificacao.BRONZE;
+		} else {
+			this.tipoClassificacao = TipoClassificacao.LANCAMENTO;
+		}
+		if(tipoAcervo.equals("Cd")) {
+			this.tipoMidia = TipoMidia.CD;
+		} else if(tipoMidia.equals("Dvd")) {
+			this.tipoMidia = TipoMidia.DVD;
+		} else {
+			this.tipoMidia = TipoMidia.FITA;
+		}
 	}
 
 	public String getTitulo() {
@@ -69,6 +90,17 @@ public class Acervo {
 	public void setTipoAcervo(TipoAcervo tipoAcervo) {
 		this.tipoAcervo = tipoAcervo;
 	}
+	
+	
+	public void setTipoAcervo(String tipoAcervo) {
+		if(tipoAcervo.equals("Filme")) {
+			this.tipoAcervo = TipoAcervo.FILME;
+		} else if(tipoAcervo.equals("VideoGame")) {
+			this.tipoAcervo = TipoAcervo.VIDEOGAME;
+		} else {
+			this.tipoAcervo = TipoAcervo.MUSICA;
+		}
+	}
 
 	public TipoClassificacao getTipoClassificacao() {
 		return tipoClassificacao;
@@ -78,6 +110,18 @@ public class Acervo {
 		this.tipoClassificacao = tipoClassificacao;
 	}
 
+	public void setTipoClassificacao(String tipoClassificacao) {
+		if(tipoClassificacao.equals("Ouro")) {
+			this.tipoClassificacao = TipoClassificacao.OURO;
+		} else if(tipoClassificacao.equals("Prata")) {
+			this.tipoClassificacao = TipoClassificacao.PRATA;
+		} else if(tipoClassificacao.equals("Bronze")) {
+			this.tipoClassificacao = TipoClassificacao.BRONZE;
+		} else {
+			this.tipoClassificacao = TipoClassificacao.LANCAMENTO;
+		}
+	}
+	
 	public TipoMidia getTipoMidia() {
 		return tipoMidia;
 	}
@@ -85,7 +129,17 @@ public class Acervo {
 	public void setTipoMidia(TipoMidia tipoMidia) {
 		this.tipoMidia = tipoMidia;
 	}
-
+	
+	public void setTipoMidia(String tipoMidia) {
+		if(tipoAcervo.equals("Cd")) {
+			this.tipoMidia = TipoMidia.CD;
+		} else if(tipoMidia.equals("Dvd")) {
+			this.tipoMidia = TipoMidia.DVD;
+		} else {
+			this.tipoMidia = TipoMidia.FITA;
+		}
+	}
+	
 	public List<Exemplar> getExemplares() {
 		return exemplares;
 	}
@@ -102,4 +156,7 @@ public class Acervo {
 		return id;
 	}
 	
+	public void setId(long id) {
+		this.id = id;
+	}
 }

@@ -1,34 +1,40 @@
 package locadora.domain;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Cliente {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	private String codigo, nome, endereco, telefone, bairro, cep;
+	private String nome, endereco, telefone, bairro, cep;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
+	@JsonManagedReference
+	private List<Emprestimo> emprestimos;
 	
 	public Cliente() {}
 	
-	public Cliente(String codigo, String nome, String endereco, String telefone, String bairro, String cep) {
+	public Cliente(String nome, String endereco, String telefone, String bairro, String cep) {
 		super();
-		this.codigo = codigo;
 		this.nome = nome;
 		this.endereco = endereco;
 		this.telefone = telefone;
 		this.bairro = bairro;
 		this.cep = cep;
+		this.emprestimos = new LinkedList<Emprestimo>();
 	}
-	public String getCodigo() {
-		return codigo;
-	}
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
+	
 	public String getNome() {
 		return nome;
 	}

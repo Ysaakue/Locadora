@@ -9,6 +9,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
@@ -16,29 +20,20 @@ public class Exemplar {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	private int sequencial;
 	private Date dataRegistro;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "acervo")
-	@JsonBackReference
+//	@JsonBackReference
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Acervo acervo;
 
 	public Exemplar() {}
 	
-	public Exemplar(int sequencial, Date dataRegistro, Acervo acervo) {
+	public Exemplar( Date dataRegistro, Acervo acervo) {
 		super();
-		this.sequencial = sequencial;
 		this.dataRegistro = dataRegistro;
 		this.acervo = acervo;
-	}
-
-	public int getSequencial() {
-		return sequencial;
-	}
-
-	public void setSequencial(int sequencial) {
-		this.sequencial = sequencial;
 	}
 
 	public Date getDataRegistro() {
@@ -49,8 +44,8 @@ public class Exemplar {
 		this.dataRegistro = dataRegistro;
 	}
 
-	public Acervo getAcervo() {
-		return acervo;
+	public long getAcervo() {
+		return acervo.getId();
 	}
 
 	public void setAcervo(Acervo acervo) {

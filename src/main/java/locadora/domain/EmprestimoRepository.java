@@ -1,7 +1,7 @@
 package locadora.domain;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface EmprestimoRepository extends CrudRepository <Emprestimo, Long>{
+public interface EmprestimoRepository extends JpaRepository <Emprestimo, Long>{
 
 }

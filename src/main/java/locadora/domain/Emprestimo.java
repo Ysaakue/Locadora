@@ -1,6 +1,7 @@
 package locadora.domain;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,22 +13,26 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
+@Table(name = "EMPRESTIMO")
 public class Emprestimo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	private String codigo;
 	private Date dataEmprestimo, dataEntregaPrevista, dataEntrega;
 	private float valorEmprestimo, valorMulta, valorTotal;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "cliente")
-	@JsonBackReference
+//	@JsonBackReference
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Cliente cliente;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "emprestimo")
@@ -36,19 +41,11 @@ public class Emprestimo {
 	
 	public Emprestimo() {}
 	
-	public Emprestimo(String codigo, Date dataEmprestimo, Cliente cliente) {
+	public Emprestimo(Date dataEmprestimo, Cliente cliente) {
 		super();
-		this.codigo = codigo;
 		this.dataEmprestimo = dataEmprestimo;
 		this.cliente = cliente;
-	}
-
-	public String getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
+		this.itens = new LinkedList<ItemEmprestimo>();
 	}
 
 	public Date getDataEmprestimo() {
@@ -76,7 +73,11 @@ public class Emprestimo {
 	}
 
 	public float getValorEmprestimo() {
-		return valorEmprestimo;
+		this.valorEmprestimo = 0;
+		for(ItemEmprestimo item: this.itens) {
+			this.valorEmprestimo+=item.calcularValor();
+		}
+		return this.valorEmprestimo;
 	}
 
 	public void setValorEmprestimo(float valorEmprestimo) {
@@ -99,8 +100,8 @@ public class Emprestimo {
 		this.valorTotal = valorTotal;
 	}
 
-	public Cliente getCliente() {
-		return cliente;
+	public long getCliente() {
+		return cliente.getId();
 	}
 
 	public void setCliente(Cliente cliente) {
@@ -117,13 +118,5 @@ public class Emprestimo {
 	
 	public long getId() {
 		return id;
-	}
-	
-	public float calculaValorEmprestimo() {
-		this.valorEmprestimo = 0;
-		for(ItemEmprestimo item: this.itens) {
-			this.valorEmprestimo+=item.calcularValor();
-		}
-		return this.valorEmprestimo;
 	}
 }
